@@ -1,0 +1,444 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="net.javaw.example.dao.ProjectMapper" >
+  <resultMap id="BaseResultMap" type="net.javaw.example.model.Project" >
+    <id column="ID" property="id" jdbcType="INTEGER" />
+    <result column="TENANT_ID" property="tenantId" jdbcType="INTEGER" />
+    <result column="OWNER" property="owner" jdbcType="CHAR" />
+    <result column="NAME" property="name" jdbcType="VARCHAR" />
+    <result column="ICON_URL" property="iconUrl" jdbcType="VARCHAR" />
+    <result column="VERSION" property="version" jdbcType="CHAR" />
+    <result column="K8S_VERSION" property="k8sVersion" jdbcType="CHAR" />
+    <result column="APP_TYPE" property="appType" jdbcType="TINYINT" />
+    <result column="ZONE_ID" property="zoneId" jdbcType="INTEGER" />
+    <result column="CLUSTER_ID" property="clusterId" jdbcType="INTEGER" />
+    <result column="RES_PARTION_ID" property="resPartionId" jdbcType="INTEGER" />
+    <result column="STATUS" property="status" jdbcType="TINYINT" />
+    <result column="NOTE" property="note" jdbcType="VARCHAR" />
+    <result column="LAST_UPDATED" property="lastUpdated" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="net.javaw.example.model.ProjectWithBLOBs" extends="BaseResultMap" >
+    <result column="JSON_SPEC" property="jsonSpec" jdbcType="LONGVARCHAR" />
+    <result column="PREV_JSON_SPEC" property="prevJsonSpec" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    ID, TENANT_ID, OWNER, NAME, ICON_URL, VERSION, K8S_VERSION, APP_TYPE, ZONE_ID, CLUSTER_ID, 
+    RES_PARTION_ID, STATUS, NOTE, LAST_UPDATED
+  </sql>
+  <sql id="Blob_Column_List" >
+    JSON_SPEC, PREV_JSON_SPEC
+  </sql>
+  <select id="selectByExampleWithBLOBs" resultMap="ResultMapWithBLOBs" parameterType="net.javaw.example.model.ProjectExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from zcm_project
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="net.javaw.example.model.ProjectExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    'true' as QUERYID,
+    <include refid="Base_Column_List" />
+    from zcm_project
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+    <if test="page != null" >
+      limit #{page.begin} , #{page.length}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from zcm_project
+    where ID = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from zcm_project
+    where ID = #{id,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="net.javaw.example.model.ProjectExample" >
+    delete from zcm_project
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="net.javaw.example.model.ProjectWithBLOBs" useGeneratedKeys="true" keyProperty="id" >
+    insert into zcm_project (TENANT_ID, OWNER, NAME, 
+      ICON_URL, VERSION, K8S_VERSION, 
+      APP_TYPE, ZONE_ID, CLUSTER_ID, 
+      RES_PARTION_ID, STATUS, NOTE, 
+      LAST_UPDATED, JSON_SPEC, PREV_JSON_SPEC
+      )
+    values (#{tenantId,jdbcType=INTEGER}, #{owner,jdbcType=CHAR}, #{name,jdbcType=VARCHAR}, 
+      #{iconUrl,jdbcType=VARCHAR}, #{version,jdbcType=CHAR}, #{k8sVersion,jdbcType=CHAR}, 
+      #{appType,jdbcType=TINYINT}, #{zoneId,jdbcType=INTEGER}, #{clusterId,jdbcType=INTEGER}, 
+      #{resPartionId,jdbcType=INTEGER}, #{status,jdbcType=TINYINT}, #{note,jdbcType=VARCHAR}, 
+      #{lastUpdated,jdbcType=TIMESTAMP}, #{jsonSpec,jdbcType=LONGVARCHAR}, #{prevJsonSpec,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="net.javaw.example.model.ProjectWithBLOBs" useGeneratedKeys="true" keyProperty="id" >
+    insert into zcm_project
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="tenantId != null" >
+        TENANT_ID,
+      </if>
+      <if test="owner != null" >
+        OWNER,
+      </if>
+      <if test="name != null" >
+        NAME,
+      </if>
+      <if test="iconUrl != null" >
+        ICON_URL,
+      </if>
+      <if test="version != null" >
+        VERSION,
+      </if>
+      <if test="k8sVersion != null" >
+        K8S_VERSION,
+      </if>
+      <if test="appType != null" >
+        APP_TYPE,
+      </if>
+      <if test="zoneId != null" >
+        ZONE_ID,
+      </if>
+      <if test="clusterId != null" >
+        CLUSTER_ID,
+      </if>
+      <if test="resPartionId != null" >
+        RES_PARTION_ID,
+      </if>
+      <if test="status != null" >
+        STATUS,
+      </if>
+      <if test="note != null" >
+        NOTE,
+      </if>
+      <if test="lastUpdated != null" >
+        LAST_UPDATED,
+      </if>
+      <if test="jsonSpec != null" >
+        JSON_SPEC,
+      </if>
+      <if test="prevJsonSpec != null" >
+        PREV_JSON_SPEC,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="tenantId != null" >
+        #{tenantId,jdbcType=INTEGER},
+      </if>
+      <if test="owner != null" >
+        #{owner,jdbcType=CHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="iconUrl != null" >
+        #{iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        #{version,jdbcType=CHAR},
+      </if>
+      <if test="k8sVersion != null" >
+        #{k8sVersion,jdbcType=CHAR},
+      </if>
+      <if test="appType != null" >
+        #{appType,jdbcType=TINYINT},
+      </if>
+      <if test="zoneId != null" >
+        #{zoneId,jdbcType=INTEGER},
+      </if>
+      <if test="clusterId != null" >
+        #{clusterId,jdbcType=INTEGER},
+      </if>
+      <if test="resPartionId != null" >
+        #{resPartionId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=TINYINT},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdated != null" >
+        #{lastUpdated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jsonSpec != null" >
+        #{jsonSpec,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="prevJsonSpec != null" >
+        #{prevJsonSpec,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="net.javaw.example.model.ProjectExample" resultType="java.lang.Integer" >
+    select count(*) from zcm_project
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update zcm_project
+    <set >
+      <if test="record.id != null" >
+        ID = #{record.id,jdbcType=INTEGER},
+      </if>
+      <if test="record.tenantId != null" >
+        TENANT_ID = #{record.tenantId,jdbcType=INTEGER},
+      </if>
+      <if test="record.owner != null" >
+        OWNER = #{record.owner,jdbcType=CHAR},
+      </if>
+      <if test="record.name != null" >
+        NAME = #{record.name,jdbcType=VARCHAR},
+      </if>
+      <if test="record.iconUrl != null" >
+        ICON_URL = #{record.iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.version != null" >
+        VERSION = #{record.version,jdbcType=CHAR},
+      </if>
+      <if test="record.k8sVersion != null" >
+        K8S_VERSION = #{record.k8sVersion,jdbcType=CHAR},
+      </if>
+      <if test="record.appType != null" >
+        APP_TYPE = #{record.appType,jdbcType=TINYINT},
+      </if>
+      <if test="record.zoneId != null" >
+        ZONE_ID = #{record.zoneId,jdbcType=INTEGER},
+      </if>
+      <if test="record.clusterId != null" >
+        CLUSTER_ID = #{record.clusterId,jdbcType=INTEGER},
+      </if>
+      <if test="record.resPartionId != null" >
+        RES_PARTION_ID = #{record.resPartionId,jdbcType=INTEGER},
+      </if>
+      <if test="record.status != null" >
+        STATUS = #{record.status,jdbcType=TINYINT},
+      </if>
+      <if test="record.note != null" >
+        NOTE = #{record.note,jdbcType=VARCHAR},
+      </if>
+      <if test="record.lastUpdated != null" >
+        LAST_UPDATED = #{record.lastUpdated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.jsonSpec != null" >
+        JSON_SPEC = #{record.jsonSpec,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="record.prevJsonSpec != null" >
+        PREV_JSON_SPEC = #{record.prevJsonSpec,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExampleWithBLOBs" parameterType="map" >
+    update zcm_project
+    set ID = #{record.id,jdbcType=INTEGER},
+      TENANT_ID = #{record.tenantId,jdbcType=INTEGER},
+      OWNER = #{record.owner,jdbcType=CHAR},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      ICON_URL = #{record.iconUrl,jdbcType=VARCHAR},
+      VERSION = #{record.version,jdbcType=CHAR},
+      K8S_VERSION = #{record.k8sVersion,jdbcType=CHAR},
+      APP_TYPE = #{record.appType,jdbcType=TINYINT},
+      ZONE_ID = #{record.zoneId,jdbcType=INTEGER},
+      CLUSTER_ID = #{record.clusterId,jdbcType=INTEGER},
+      RES_PARTION_ID = #{record.resPartionId,jdbcType=INTEGER},
+      STATUS = #{record.status,jdbcType=TINYINT},
+      NOTE = #{record.note,jdbcType=VARCHAR},
+      LAST_UPDATED = #{record.lastUpdated,jdbcType=TIMESTAMP},
+      JSON_SPEC = #{record.jsonSpec,jdbcType=LONGVARCHAR},
+      PREV_JSON_SPEC = #{record.prevJsonSpec,jdbcType=LONGVARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update zcm_project
+    set ID = #{record.id,jdbcType=INTEGER},
+      TENANT_ID = #{record.tenantId,jdbcType=INTEGER},
+      OWNER = #{record.owner,jdbcType=CHAR},
+      NAME = #{record.name,jdbcType=VARCHAR},
+      ICON_URL = #{record.iconUrl,jdbcType=VARCHAR},
+      VERSION = #{record.version,jdbcType=CHAR},
+      K8S_VERSION = #{record.k8sVersion,jdbcType=CHAR},
+      APP_TYPE = #{record.appType,jdbcType=TINYINT},
+      ZONE_ID = #{record.zoneId,jdbcType=INTEGER},
+      CLUSTER_ID = #{record.clusterId,jdbcType=INTEGER},
+      RES_PARTION_ID = #{record.resPartionId,jdbcType=INTEGER},
+      STATUS = #{record.status,jdbcType=TINYINT},
+      NOTE = #{record.note,jdbcType=VARCHAR},
+      LAST_UPDATED = #{record.lastUpdated,jdbcType=TIMESTAMP}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="net.javaw.example.model.ProjectWithBLOBs" >
+    update zcm_project
+    <set >
+      <if test="tenantId != null" >
+        TENANT_ID = #{tenantId,jdbcType=INTEGER},
+      </if>
+      <if test="owner != null" >
+        OWNER = #{owner,jdbcType=CHAR},
+      </if>
+      <if test="name != null" >
+        NAME = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="iconUrl != null" >
+        ICON_URL = #{iconUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="version != null" >
+        VERSION = #{version,jdbcType=CHAR},
+      </if>
+      <if test="k8sVersion != null" >
+        K8S_VERSION = #{k8sVersion,jdbcType=CHAR},
+      </if>
+      <if test="appType != null" >
+        APP_TYPE = #{appType,jdbcType=TINYINT},
+      </if>
+      <if test="zoneId != null" >
+        ZONE_ID = #{zoneId,jdbcType=INTEGER},
+      </if>
+      <if test="clusterId != null" >
+        CLUSTER_ID = #{clusterId,jdbcType=INTEGER},
+      </if>
+      <if test="resPartionId != null" >
+        RES_PARTION_ID = #{resPartionId,jdbcType=INTEGER},
+      </if>
+      <if test="status != null" >
+        STATUS = #{status,jdbcType=TINYINT},
+      </if>
+      <if test="note != null" >
+        NOTE = #{note,jdbcType=VARCHAR},
+      </if>
+      <if test="lastUpdated != null" >
+        LAST_UPDATED = #{lastUpdated,jdbcType=TIMESTAMP},
+      </if>
+      <if test="jsonSpec != null" >
+        JSON_SPEC = #{jsonSpec,jdbcType=LONGVARCHAR},
+      </if>
+      <if test="prevJsonSpec != null" >
+        PREV_JSON_SPEC = #{prevJsonSpec,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="net.javaw.example.model.ProjectWithBLOBs" >
+    update zcm_project
+    set TENANT_ID = #{tenantId,jdbcType=INTEGER},
+      OWNER = #{owner,jdbcType=CHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      ICON_URL = #{iconUrl,jdbcType=VARCHAR},
+      VERSION = #{version,jdbcType=CHAR},
+      K8S_VERSION = #{k8sVersion,jdbcType=CHAR},
+      APP_TYPE = #{appType,jdbcType=TINYINT},
+      ZONE_ID = #{zoneId,jdbcType=INTEGER},
+      CLUSTER_ID = #{clusterId,jdbcType=INTEGER},
+      RES_PARTION_ID = #{resPartionId,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=TINYINT},
+      NOTE = #{note,jdbcType=VARCHAR},
+      LAST_UPDATED = #{lastUpdated,jdbcType=TIMESTAMP},
+      JSON_SPEC = #{jsonSpec,jdbcType=LONGVARCHAR},
+      PREV_JSON_SPEC = #{prevJsonSpec,jdbcType=LONGVARCHAR}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="net.javaw.example.model.Project" >
+    update zcm_project
+    set TENANT_ID = #{tenantId,jdbcType=INTEGER},
+      OWNER = #{owner,jdbcType=CHAR},
+      NAME = #{name,jdbcType=VARCHAR},
+      ICON_URL = #{iconUrl,jdbcType=VARCHAR},
+      VERSION = #{version,jdbcType=CHAR},
+      K8S_VERSION = #{k8sVersion,jdbcType=CHAR},
+      APP_TYPE = #{appType,jdbcType=TINYINT},
+      ZONE_ID = #{zoneId,jdbcType=INTEGER},
+      CLUSTER_ID = #{clusterId,jdbcType=INTEGER},
+      RES_PARTION_ID = #{resPartionId,jdbcType=INTEGER},
+      STATUS = #{status,jdbcType=TINYINT},
+      NOTE = #{note,jdbcType=VARCHAR},
+      LAST_UPDATED = #{lastUpdated,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=INTEGER}
+  </update>
+</mapper>

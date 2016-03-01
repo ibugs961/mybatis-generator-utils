@@ -12,3 +12,6 @@
 /.gitignore
 /.myumldata
 /.project
+
+/.idea
+*.iml

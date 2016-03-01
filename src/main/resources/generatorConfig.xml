@@ -56,19 +56,23 @@
 
 		<!-- schema即为数据库名;tableName:用于自动生成代码的数据库表;domainObjectName:对应于数据库表的javaBean类名 -->
 		<!-- 为Oracle数据库时表名必须用大写 -->
-		<table tableName="test_domain_host" domainObjectName="DomainHost">
+		<!--<table tableName="test_domain_host" domainObjectName="DomainHost">-->
 			<!-- Oracle自增长序列时需要 -->
 			<!-- <generatedKey column="CODE_ID" sqlStatement="select trim(to_char(WLK_SEQ_ANTIFAKE.nextval, '000000000009')) from dual" /> -->
-			<property name="useActualColumnNames" value="false" />
+			<!--<property name="useActualColumnNames" value="false" />
 			<columnOverride column="host_type" javaType="net.javaw.example.model.enums.HostType" typeHandler="net.javaw.example.model.enums.handler.HostTypeHandler"/>
 			<columnOverride column="icp_status" javaType="net.javaw.example.model.enums.IcpStatus" typeHandler="net.javaw.example.model.enums.handler.IcpStatusTypeHandler"/>
 			<columnOverride column="op_status" javaType="net.javaw.example.model.enums.OpResult" typeHandler="net.javaw.example.model.enums.handler.OpResultTypeHandler"/>
-
+			-->
 			<!-- 枚举类转换配置，不配置的话使用默认类型，3种不同的枚举类配置参考 -->
 			<!-- <columnOverride column="HOST_TYPE" javaType="net.javaw.example.model.enums.HostType" typeHandler="net.javaw.example.model.enums.handler.HostTypeHandler"/> -->
 			<!-- <columnOverride column="ICP_STATUS" javaType="net.javaw.example.model.enums.IcpStatus" typeHandler="net.javaw.example.model.enums.handler.IcpStatusTypeHandler"/> -->
 			<!-- <columnOverride column="LOG_OP_STATUS" javaType="net.javaw.example.model.enums.OpResult" typeHandler="net.javaw.example.model.enums.handler.OpResultTypeHandler"/> -->
+		<!--</table>-->
 
+		<table tableName="zcm_project" domainObjectName="Project" enableCountByExample="true" enableUpdateByExample="true"
+			   enableDeleteByExample="true" enableSelectByExample="true" selectByExampleQueryId="true">
+			<generatedKey column="id" sqlStatement="JDBC" />
 		</table>
 	</context>
 </generatorConfiguration>

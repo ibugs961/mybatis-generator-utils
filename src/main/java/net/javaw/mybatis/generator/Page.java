@@ -36,8 +36,6 @@ public class Page
 	// 总共页数
 	private int total;
 
-
-
 	/**
 	 * 
 	 * 构造函数
